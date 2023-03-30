@@ -1,32 +1,35 @@
-// var selectedText = window.getSelection(); 
-// var range = selection.getRangeAt(0);
-
-// var newRange = document.createRange();
-// newRange.setStart(range.startContainer, range.startOffset);
-// newRange.setEnd(range.endContainer, range.endOffset);
-
-// var newSelection = window.getSelection();
-// newSelection.removeAllRanges();
-// newSelection.addRange(newRange);
-
-// var html = document.documentElement.outerHTML; 
-// var regex = new RegExp(selectedText, 'g'); 
-// var match = regex.exec(html);
-// console.log(selectedText)
-// if (match) { 
-//     console.log('Selected text found at position', match.index);
-// } else { console.log('Selected text not found in HTML'); }
-
-
-// Get the highlighted range
-var highlightedRange;
 document.addEventListener('mouseup', function() {
   var selection = window.getSelection();
   if (selection.type === 'Range') {
-    highlightedRange = selection.getRangeAt(0);
-    console.log('Selected text found at position', selection);
-    // console.log(highlightedRange);
-    // console.log(selection.anchorNode.parentElement.id);
-    console.log(selection.anchorNode.parentNode.parentNode.id)
+    var anchorNode = selection.anchorNode;
+    var parentNode = anchorNode.parentNode;
+    var id = parentNode.id;
+    var classList = parentNode.classList;
+    //if there is no id, than use class to identify
+    var elementIdentifier = id || classList[0] || 'Unknown';
+
+    //get the topLayer of id
+    if (elementIdentifier.startsWith('S0')) {
+      var topLayer = id ? id.split('.').slice(0, 2).join('.') : classList[0];
+      }
+    else{
+      var topLayer = id ? id.split('.')[0] : classList[0];
+    }
+
+    //print the current element identifier and its toplayer
+    console.log('Selected element identifier:', elementIdentifier);
+    console.log('Top layer identifier:', topLayer);
   }
+
+  // Extract the browser name and version information
+  var userAgent = navigator.userAgent;
+  var browserInfo = userAgent.match(/(firefox|edge|opr|chrome|safari)[\/]([\d.]+)/i);
+  var browserName = browserInfo[1];
+  var browserVersion = browserInfo[2];
+
+  //Capitalize the first letter of the browser name
+  browserName = browserName.charAt(0).toUpperCase() + browserName.slice(1);
+
+  // Print the browser name and version information
+  console.log('Browser:', browserName, browserVersion);
 });
